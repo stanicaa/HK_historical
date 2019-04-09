@@ -1,0 +1,26 @@
+import bs4
+import requests
+import csv
+
+url = "https://hk.finance.yahoo.com/quote/1257.HK/history?p=1257.HK"
+
+def table_to_df(table):
+    table_list=[]
+    rows=table.tbody.findAll('tr')
+    for row in rows:
+        cols=[]
+        columns=row.findAll('td')
+        for c in columns:
+            cols.append(c.text)
+        table_list.append(cols)
+    return table_list
+
+page = requests.get(url)
+soup = bs4.BeautifulSoup(page.content, 'lxml')
+table = soup.find(name='table', attrs={'data-test':'historical-prices'})
+
+a=table_to_df(table)
+
+with open('testing.csv', 'w') as writeFile:
+    writer = csv.writer(writeFile)
+    writer.writerows(a)
