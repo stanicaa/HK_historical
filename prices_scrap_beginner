@@ -19,4 +19,4 @@ for row in rows:
 
 with open('testing.csv', 'w') as writeFile:
     writer = csv.writer(writeFile)
-    writer.writerows(a)
+    writer.writerows(table_list)
